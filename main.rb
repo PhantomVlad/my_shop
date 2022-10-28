@@ -6,44 +6,43 @@ require_relative 'lib/cart'
 require_relative 'lib/product_collection'
 
 currect_path_products = "#{__dir__}/data"
-new_collection = ProductCollection.from_dir(currect_path_products)
+collection = ProductCollection.from_dir(currect_path_products)
+
 
 puts "Здравствуйте, Вас приветствует магазин на диване"
 puts
 
-puts "Хотите отсортировать список? Если да, то по какому признаку?(1 - name, 2- author, 3 - amount, 4 - price, 5 - catregories"
-input_sort = gets.chop
-puts "Если хотите отсортироать от большого к меньшему или Я-А, тогда введите r"
-input_reverse = gets.chop
-new_collection.sort_collection!(sort_method: input_sort, order: input_reverse)
+puts "Хотите отсортировать список? Если да, то по какому признаку?(1 - name, 2- author, 3 - amount, 4 - price, 5 - categories)"
+input_sort = gets.chomp
+puts "Если хотите отсортировать от большого к меньшему или Я-А, тогда введите r"
+input_reverse = gets.chomp
+collection.sort_collection!(sort_method: input_sort, order: input_reverse)
 
-cart = Cart.new()
+cart = Cart.new
 
 loop do
+  collection.remove_out_of_stock!
   puts "Что хотите купить?"
   puts
-  new_collection.to_a.each.with_index(1) {|product, index| puts "#{index}. #{product}"}
+  puts collection
+  puts "0. Выход"
   puts
 
-  puts "Напишите номер покупки. Если хотите завершить покупки - введите end"
+  puts "Напишите номер покупки. Если хотите завершить покупки - введите 0"
   input = gets.chomp
-  until input.to_i.between?(1, new_collection.to_a.size)
-    if input == "end"
-      puts "Список ваших покупок: \n\n#{cart.to_s}"
-      puts
-      puts "Всего товаров на сумму: #{cart.all_price}. Спасибо за покупку!"
-      abort
-    end
+  break if input == "0"
+
+  unless input.to_i.between?(1, collection.to_a.size)
     puts "Вы ввели неверный номер. Попробуйте еще раз"
-    input = gets.chomp
+    next
   end
 
   input_index = input.to_i - 1
-  sell_product = new_collection.to_a[input_index]
+  sell_product = collection.to_a[input_index]
   puts
 
-  if sell_product.amount?
-    puts "Вы выбрали: #{sell_product.to_s_end}"
+  if sell_product.in_stock?
+    puts "Вы выбрали: #{sell_product.info}"
     cart.add_product(sell_product)
     sell_product.sell!
     puts
@@ -52,7 +51,13 @@ loop do
   end
 
   puts
-  puts "Всего товаров на сумму: #{cart.all_price}"
+  puts "Всего товаров на сумму: #{cart.total}"
   puts
 end
+puts
+puts "Список ваших покупок:"
+puts
+puts cart
+puts
+puts "Всего товаров на сумму: #{cart.total}. Спасибо за покупку!"
 

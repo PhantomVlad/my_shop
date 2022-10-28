@@ -3,6 +3,7 @@ class Book < Product
   def initialize(params)
     super
     @type = params[:type]
+    @author = params[:author]
   end
 
   def self.from_file(file_path)
@@ -20,7 +21,7 @@ class Book < Product
   end
 
 
-  def to_s_end
-    "Книга '#{@name}', #{@type}, автор - #{@author}, #{@price} руб."
+  def info
+    "Книга '#{@name}', #{@type}, автор - #{@author}"
   end
 end

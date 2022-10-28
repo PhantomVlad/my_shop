@@ -5,14 +5,13 @@ class Product
     @price = params[:price]
     @amount = params[:amount]
     @name = params[:name]
-    @author = params[:author]
   end
 
   def self.from_file(file_path)
     raise NotImplementedError
   end
 
-  def amount?
+  def in_stock?
     @amount != 0
   end
 

@@ -39,6 +39,18 @@ class ProductCollection
     @products.reverse! if params[:input_reverse] == "r"
     self
   end
+
+  def to_s
+    "#{@products.map.with_index(1) {|product, index| "#{index}. #{product}"}.join("\n")}"
+  end
+
+  def product_by_index(input_index)
+    self.to_a[input_index]
+  end
+
+  def remove_out_of_stock!
+    @products.select! {|product| product.amount != 0}
+  end
 end
 
 

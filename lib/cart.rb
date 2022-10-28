@@ -1,17 +1,21 @@
 class Cart
-  attr_reader :all_price, :products
+  attr_reader :products
 
   def initialize
     @products = []
-    @all_price = 0
+  end
+
+  def total
+    @products.sum(&:price)
   end
 
   def add_product(sell_product)
     @products << sell_product
-    @all_price += sell_product.price
   end
 
   def to_s
-    @products.map(&:to_s_end).join("\n")
+    @products.map(&:info).join("\n")
+    products_output = @products.tally()
+    "#{products_output.map {|product_output, num| "#{product_output.info} - #{num} шт. - всего #{product_output.price*num} рублей"}.join("\n")}"
   end
 end

@@ -4,17 +4,13 @@ class Disk < Product
     super
     @year = params[:year]
     @genre = params[:genre]
+    @executor = params[:executor]
   end
-
-  def to_s
-    "Фильм '#{@name}', #{@year}, режиссер - #{@author}, #{@price} руб. (осталось #{@amount}) "
-  end
-
   def self.from_file(file_path)
     lines = File.readlines(file_path).map(&:chomp)
     self.new(
       name: lines[0],
-      author: lines[1],
+      executor: lines[1],
       genre: lines[2],
       year: lines[3].to_i,
       price: lines[4].to_i,
@@ -23,11 +19,11 @@ class Disk < Product
   end
 
   def to_s
-    "Альбом '#{@name}', #{@genre}, #{@year} года, автор - #{@author}, #{@price} руб. (осталось #{@amount}) "
+    "Альбом '#{@name}', #{@genre}, #{@year} года, исполнитель - #{@executor}, #{@price} руб. (осталось #{@amount}) "
   end
 
-  def to_s_end
-    "Альбом '#{@name}', #{@genre}, #{@year} года, автор - #{@author}, #{@price} руб."
+  def info
+    "Альбом '#{@name}', #{@genre}, #{@year} года, исполнитель - #{@executor}"
   end
 end
 

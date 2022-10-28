@@ -3,13 +3,14 @@ class Film < Product
   def initialize(params)
     super
     @year = params[:year]
+    @director = params[:director]
   end
 
   def self.from_file(file_path)
     lines = File.readlines(file_path).map(&:chomp)
     self.new(
       name: lines[0],
-      author: lines[1],
+      director: lines[1],
       year: lines[2].to_i,
       price: lines[3].to_i,
       amount: lines[4].to_i
@@ -17,10 +18,10 @@ class Film < Product
   end
 
   def to_s
-    "Фильм '#{@name}', #{@year}, режиссер - #{@author}, #{@price} руб. (осталось #{@amount}) "
+    "Фильм '#{@name}', #{@year}, режиссер - #{@director}, #{@price} руб. (осталось #{@amount}) "
   end
 
-  def to_s_end
-    "Фильм '#{@name}', #{@year}, режиссер - #{@author}, #{@price} руб."
+  def info
+    "Фильм '#{@name}', #{@year}, режиссер - #{@director}"
   end
 end

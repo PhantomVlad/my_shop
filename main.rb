@@ -29,16 +29,17 @@ loop do
   puts
 
   puts "Напишите номер покупки. Если хотите завершить покупки - введите 0"
-  input = gets.chomp
-  break if input == "0"
+  input = gets.to_i
+  break if input == 0
 
-  unless input.to_i.between?(1, collection.to_a.size)
+
+  unless input.between?(1, collection.size)
     puts "Вы ввели неверный номер. Попробуйте еще раз"
     next
   end
 
-  input_index = input.to_i - 1
-  sell_product = collection.to_a[input_index]
+  input_index = input - 1
+  sell_product = collection.product_by_index(input)
   puts
 
   if sell_product.in_stock?

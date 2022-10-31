@@ -14,8 +14,7 @@ class Cart
   end
 
   def to_s
-    @products.map(&:info).join("\n")
-    products_output = @products.tally()
+    products_output = @products.tally
     "#{products_output.map {|product_output, num| "#{product_output.info} - #{num} шт. - всего #{product_output.price*num} рублей"}.join("\n")}"
   end
 end

@@ -41,15 +41,19 @@ class ProductCollection
   end
 
   def to_s
-    "#{@products.map.with_index(1) {|product, index| "#{index}. #{product}"}.join("\n")}"
+    @products.map.with_index(1) {|product, index| "#{index}. #{product}"}.join("\n")
   end
 
   def product_by_index(input_index)
-    self.to_a[input_index]
+    @products.to_a[input_index - 1]
   end
 
   def remove_out_of_stock!
     @products.select! {|product| product.amount != 0}
+  end
+
+  def size
+    @products.size
   end
 end
 
